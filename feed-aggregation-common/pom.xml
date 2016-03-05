@@ -16,4 +16,16 @@
     <artifactId>feed-aggregation-common</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <commons.lang3.version>3.1</commons.lang3.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.lang3.version}</version>
+        </dependency>
+    </dependencies>
+
 </project>

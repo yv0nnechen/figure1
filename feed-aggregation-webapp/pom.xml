@@ -15,5 +15,18 @@
     <description>Feed aggregation webapp</description>
     <artifactId>feed-aggregation-webapp</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>figure1</groupId>
+            <artifactId>feed-aggregation-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
