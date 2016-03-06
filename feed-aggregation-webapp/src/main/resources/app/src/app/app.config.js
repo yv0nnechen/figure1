@@ -4,7 +4,7 @@
 angular.module('feedAggregation', [
     'ui.router',
     'feedAggregation.Landing',
-    'feedAggregation.Gallary'
+    'feedAggregation.Gallery'
 ])
     .config(function($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise(function($injector) {
@@ -34,13 +34,15 @@ angular.module('feedAggregation', [
             })
             .state('landing', {
                 parent: 'publicRoot',
+                url:'/login',
                 templateUrl: 'src/app/landing_component/landing.tpl.html',
                 controller: "LandingCtrl"
             })
-            .state('gallary', {
+            .state('gallery', {
                 parent: 'privateRoot',
-                templateUrl: 'src/app/gallary/gallary.tpl.html',
-                controller: "LandingCtrl"
+                url:'/gallery',
+                templateUrl: 'src/app/gallery/gallery.tpl.html',
+                //controller: "GalleryCtrl"
             })
 
 
