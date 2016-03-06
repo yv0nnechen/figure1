@@ -1,10 +1,12 @@
 package controller.impl;
 
 import controller.InstagramOauthController;
+import exception.OAuthException;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import model.OAuthCredentials;
 import org.jinstagram.Instagram;
 import org.jinstagram.auth.InstagramAuthService;
 import org.jinstagram.auth.model.Token;
@@ -15,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import provider.impl.InstagramAuthProvider;
 import server.VertxHttpServer;
+import service.oauth.instagram.impl.InstagramClient;
+import service.oauth.instagram.impl.InstagramOAuth2Worker;
 
 /**
  * Created by Yvonne on 2016-03-05.
@@ -46,27 +50,43 @@ public class InstagramOauthControllerImpl implements InstagramOauthController {
 
     private void stepOne(RoutingContext routingContext){
         String twoStepCallbackUrl = VertxHttpServer.host+":"+ VertxHttpServer.port+AUTH_ROOT+"/step2";
-        instagramService = new InstagramAuthService()
-                .apiKey(InstagramAuthProvider.getInstance().getClientId())
-                .apiSecret(InstagramAuthProvider.getInstance().getClientSecret())
-                .callback(twoStepCallbackUrl)
-                .build();
+//        instagramService = new InstagramAuthService()
+//                .apiKey(InstagramAuthProvider.getInstance().getClientId())
+//                .apiSecret(InstagramAuthProvider.getInstance().getClientSecret())
+//                .callback(twoStepCallbackUrl)
+//                .build();
+        InstagramOAuth2Worker worker = new InstagramOAuth2Worker(InstagramAuthProvider.getInstance().getClientId(), InstagramAuthProvider.getInstance().getClientSecret(), twoStepCallbackUrl);
         routingContext.response().setStatusCode(302);
-        routingContext.response().headers().add("Location", instagramService.getAuthorizationUrl());
+        try {
+            routingContext.response().headers().add("Location", worker.buildAuthorizationURL());
+        } catch (OAuthException e) {
+            e.printStackTrace();
+        }
         routingContext.response().end();
     }
 
     private void stepTwo(RoutingContext routingContext) {
-        String code = routingContext.request().getParam("code");
-        Verifier verifier = new Verifier(code);
-        Token accessToken = instagramService.getAccessToken(verifier);
+        String twoStepCallbackUrl = VertxHttpServer.host+":"+ VertxHttpServer.port+AUTH_ROOT+"/step2";
 
-        service.oauth.InstagramService.service.setInstagram(new Instagram(accessToken));
+        String code = routingContext.request().getParam("code");
+//        Verifier verifier = new Verifier(code);
+//        Token accessToken = instagramService.getAccessToken(verifier);
+        InstagramOAuth2Worker worker = new InstagramOAuth2Worker(InstagramAuthProvider.getInstance().getClientId(), InstagramAuthProvider.getInstance().getClientSecret(), twoStepCallbackUrl);
+
+        try {
+            OAuthCredentials oAuthCredentials = worker.generateTokens(code);
+//            service.oauth.InstagramService.service.setInstagram(new Instagram(oAuthCredentials.getAccessToken(), ""));
+            service.oauth.InstagramService.service.setInstagramClient(new InstagramClient(InstagramAuthProvider.getInstance().getClientId(),oAuthCredentials));
+
+        } catch (OAuthException e) {
+            routingContext.response().setStatusCode(500).end();
+            return;
+        }
 //        try{
         routingContext.response().setStatusCode(302);
-        routingContext.response().headers().add("Location", "http://localhost:8080");
+        routingContext.response().headers().add("Location", "http://localhost:8080/#/gallery");
         routingContext.response().end();
-//        } catch (InstagramException e){
+//        } catch (InstagramClientException e){
 //            routingContext.response().setStatusCode(500).end();
 //        }
     }

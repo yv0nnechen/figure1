@@ -6,6 +6,7 @@ import provider.OAuthProvider;
  * Created by Yvonne on 2016-03-05.
  */
 public class InstagramAuthProvider implements OAuthProvider{
+    //TODO Should move to use system properties or load from a local secured file
     private static final String clientId = "deacb3a914c542e9b19aba04a77dd952";
     private static final String clientSecret = "effdcc6a4a5a42bab5b6d306edad5347";
 

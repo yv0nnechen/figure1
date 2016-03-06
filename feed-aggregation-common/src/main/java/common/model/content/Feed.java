@@ -4,6 +4,7 @@ package common.model.content;
  * Created by Yvonne on 2016-03-06.
  */
 public class Feed {
+    private String id;
     private String location;
     private int likeCount;
     private int commentCount;
@@ -11,7 +12,10 @@ public class Feed {
     private String caption;
     private long createdTime;
 
-    private Feed(String location, int likeCount, int commentCount, String userName, String caption, long createdTime) {
+    private Feed() {}
+
+    private Feed(String id, String location, int likeCount, int commentCount, String userName, String caption, long createdTime) {
+        this.id = id;
         this.location = location;
         this.likeCount = likeCount;
         this.commentCount = commentCount;
@@ -69,12 +73,18 @@ public class Feed {
     }
 
     public static class FeedBuilder {
+        private String id;
         private String location;
         private int likeCount;
         private int commentCount;
         private String userName;
         private String caption;
         private long createdTime;
+
+        public FeedBuilder setId(String id) {
+            this.id = id;
+            return this;
+        }
 
         public FeedBuilder setLocation(String location) {
             this.location = location;
@@ -107,7 +117,7 @@ public class Feed {
         }
 
         public Feed createFeed() {
-            return new Feed(location, likeCount, commentCount, userName, caption, createdTime);
+            return new Feed(id, location, likeCount, commentCount, userName, caption, createdTime);
         }
     }
 

@@ -45,45 +45,31 @@ Start of Login
 }
 
 
-.login-block .login-block-item input {
+.login-block .login-block-item a {
   width: 100%;
   height: 42px;
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid #ccc;
   margin-bottom: 20px;
-  padding: 0 20px 0 50px;
+  padding-top: 9px;
+  padding-right: 20px;
+  padding-left: 50px;
+  padding-bottom: 0;
   /*outline: none;*/
 }
 .login-block .login-block-item .icon {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  color: #ccc;
+  top: 5px;
+  left: 10px;
+  color: #ff7b81;
 }
 
-.login-block input:active, .login-block input:focus {
+.login-block a:active, .login-block a:hover {
   border: 1px solid #ff656c;
+  background: white;
 }
 
-.login-block button {
-  width: 100%;
-  height: 40px;
-  background: #ff656c;
-  box-sizing: border-box;
-  border-radius: 5px;
-  border: 1px solid #e15960;
-  color: #fff;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 14px;
-  outline: none;
-  cursor: pointer;
-}
-
-.login-block button:hover {
-  background: #ff7b81;
-}
 
 .section {
   position: relative;

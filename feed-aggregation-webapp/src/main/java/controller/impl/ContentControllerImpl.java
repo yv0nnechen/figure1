@@ -2,6 +2,7 @@ package controller.impl;
 
 import common.model.content.Feed;
 import controller.ContentController;
+import exception.InstagramClientException;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.Router;
@@ -11,8 +12,12 @@ import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import provider.impl.InstagramAuthProvider;
 import service.oauth.InstagramService;
+import service.oauth.instagram.impl.InstagramClient;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,22 +46,21 @@ public class ContentControllerImpl implements ContentController {
 
     private void listContent(RoutingContext routingContext) {
         try{
-            List<MediaFeedData> instFeeds = InstagramService.service.getInstagram().getUserRecentMedia().getData();
-            List<Feed> feedList = instFeeds.stream().map(mediaFeedData -> {
-                return new Feed.FeedBuilder()
-                        .setLocation(mediaFeedData.getImages().getLowResolution().getImageUrl())
-                        .setLikeCount(mediaFeedData.getLikes()!=null?mediaFeedData.getLikes().getCount():null)
-                        .setCommentCount(mediaFeedData.getComments()!=null?mediaFeedData.getComments().getCount():null)
-                        .setUserName(mediaFeedData.getCaption()!=null? (mediaFeedData.getCaption().getFrom()!=null?mediaFeedData.getCaption().getFrom().getUsername():null):null)
-                        .setCaption(mediaFeedData.getCaption()!=null?mediaFeedData.getCaption().getText():null)
-                        .setCreatedTime(mediaFeedData.getCreatedTime()!=null?Long.parseLong(mediaFeedData.getCreatedTime()):null)
-                        .createFeed();
-            }).collect(Collectors.toList());
+            List<Feed> feedList = InstagramService.service.getInstagramClient().getUserRecentMedia();
+//            List<Feed> feedList = instFeeds.stream().map(mediaFeedData -> {
+//                return new Feed.FeedBuilder()
+//                        .setLocation(mediaFeedData.getImages().getLowResolution().getImageUrl())
+//                        .setLikeCount(mediaFeedData.getLikes()!=null?mediaFeedData.getLikes().getCount():null)
+//                        .setCommentCount(mediaFeedData.getComments()!=null?mediaFeedData.getComments().getCount():null)
+//                        .setUserName(mediaFeedData.getCaption()!=null? (mediaFeedData.getCaption().getFrom()!=null?mediaFeedData.getCaption().getFrom().getUsername():null):null)
+//                        .setCaption(mediaFeedData.getCaption()!=null?mediaFeedData.getCaption().getText():null)
+//                        .setCreatedTime(mediaFeedData.getCreatedTime()!=null?Long.parseLong(mediaFeedData.getCreatedTime()):null)
+//                        .createFeed();
+//            }).collect(Collectors.toList());
             routingContext.response().end(Json.encode(feedList));
-        } catch (InstagramException e){
+        } catch (IOException | URISyntaxException | InstagramClientException e) {
             routingContext.response().setStatusCode(500).end();
         }
-
 
 
     }
