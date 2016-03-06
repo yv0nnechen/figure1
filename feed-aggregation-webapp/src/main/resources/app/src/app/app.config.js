@@ -42,7 +42,7 @@ angular.module('feedAggregation', [
                 parent: 'privateRoot',
                 url:'/gallery',
                 templateUrl: 'src/app/gallery/gallery.tpl.html',
-                //controller: "GalleryCtrl"
+                controller: "GalleryCtrl"
             })
 
 

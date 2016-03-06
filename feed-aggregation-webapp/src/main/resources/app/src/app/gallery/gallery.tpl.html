@@ -1,1 +1,50 @@
-cscasodcumzpoimfasd
+<div class="navbar navbar-default navbar-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">Brand</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Post Source<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <!--TODO is activated or not-->
+                        <li><a ng-click=""><i class="fa fa-instagram"></i> Instagram</a></li>
+                        <li><a ng-click=""><i class="fa fa-500px"></i> 500px</a></li>
+                        <li><a ng-click=""><i class="fa fa-circle"></i> Imgur</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+
+    </div>
+
+
+    <div class="section full-width-portfolio" >
+        <div class="big-title text-center" data-animation="fadeInDown" data-animation-delay="01">
+            <h1>Latest Posts</h1>
+        </div>
+
+        <ul id="gallery-list" data-animated="fadeIn">
+            <li ng-repeat="post in assets">
+                <img src="http://loremflickr.com/320/240" alt="" />
+                <div class="portfolio-item-content">
+                    <span class="header">Town winter 2013</span>
+                    <p class="body">web develpment, design</p>
+                </div>
+                <a href="#"><i class="more fa fa-eye"></i></a>
+            </li>
+        </ul>
+    </div>
+
+</div>
