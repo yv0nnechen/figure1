@@ -36,11 +36,13 @@
         </div>
 
         <ul id="gallery-list" data-animated="fadeIn">
-            <li ng-repeat="post in assets">
-                <img src="http://loremflickr.com/320/240" alt="" />
+            <li ng-repeat="feed in feeds">
+                <img ng-src="{{feed.location}}" alt="" />
                 <div class="portfolio-item-content">
-                    <span class="header">Town winter 2013</span>
-                    <p class="body">web develpment, design</p>
+                    <span class="header">{{feed.caption}}</span>
+                    <p class="body"> - by {{feed.userName}}</p>
+                    <p class="body"> <i class="fa fa-heart"></i>{{feed.likeCount}}</p>
+                    <p class="body"> <i class="fa fa-comment-o"></i>{{feed.commentCount}}</p>
                 </div>
                 <a href="#"><i class="more fa fa-eye"></i></a>
             </li>

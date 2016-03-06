@@ -2,8 +2,10 @@ package server;
 
 import controller.AuthenticateController;
 import controller.ContentController;
+import controller.InstagramOauthController;
 import controller.impl.AuthenticateControllerImpl;
 import controller.impl.ContentControllerImpl;
+import controller.impl.InstagramOauthControllerImpl;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
@@ -17,16 +19,19 @@ public class RoutingDefinitions {
     private Router mainRouter;
     private static Logger logger = LoggerFactory.getLogger(RoutingDefinitions.class);
 
-    public RoutingDefinitions(Vertx vertx){
-        this.mainRouter = Router.router(vertx);
+    public RoutingDefinitions(Vertx vertx, Router mainRouter){
+        this.mainRouter = mainRouter;
 
         // Set a static server to serve static resources, e.g. the index page
         logger.info("Setting up static handler");
-        this.mainRouter.route().handler(
-            StaticHandler.create().setWebRoot("app").setIndexPage("index-async.html"));
 
-        ContentController contentController = new ContentControllerImpl(vertx, mainRouter);
+
+        InstagramOauthController instagramOauthController = new InstagramOauthControllerImpl(vertx, mainRouter);
         AuthenticateController authenticateController = new AuthenticateControllerImpl();
+        ContentController contentController = new ContentControllerImpl(vertx, mainRouter);
+
+        this.mainRouter.route().handler(
+                StaticHandler.create().setWebRoot("app").setIndexPage("index-async.html"));
     }
 
     public Router getMainRouter() {

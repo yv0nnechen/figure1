@@ -12,6 +12,11 @@
         }
     </style>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <!--<script src="src/common/resources/BaseResource.js"></script>-->
+    <!--<script src="src/common/resources/Feed.js"></script>-->
     <link>
     <script>
         // include angular loader, which allows the files to load in any order
@@ -41,10 +46,14 @@ return g})}})})(window)})(window);
 
         // load all of the dependencies asynchronously.
         $script([
-                'bower_components/angular/angular.min.js',
-                'bower_components/angular-ui-router/release/angular-ui-router.min.js',
+//                'bower_components/angular/angular.min.js',
+//                'bower_components/angular-ui-router/release/angular-ui-router.min.js',
+//                'bower_components/angular-resource/angular-resource.min.js',
                 'bower_components/bootstrap/dist/js/bootstrap.min.js',
-                'src/app/app.config.js',
+            'src/common/resources/BaseResource.js',
+            'src/common/resources/Feed.js',
+
+            'src/app/app.config.js',
                 'src/app/landing_component/landing.js',
                 'src/app/gallery/gallery.js'
         ], function() {
