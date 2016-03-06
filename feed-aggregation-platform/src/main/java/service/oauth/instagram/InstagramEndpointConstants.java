@@ -1,4 +1,4 @@
-package service.oauth.instagram.impl;
+package service.oauth.instagram;
 
 /**
  * Created by Yvonne on 2016-03-06.

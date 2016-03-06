@@ -3,7 +3,7 @@ package exception;
 /**
  * Created by Yvonne on 2016-03-06.
  */
-public class InstagramClientException extends Exception {
+public class InstagramClientException extends ClientException {
 
     public InstagramClientException() {
     }

@@ -1,21 +1,17 @@
-package service.oauth.instagram.impl;
+package service.oauth.instagram;
 
 import common.utils.Preconditions;
 import exception.OAuthException;
 import http.HttpClientExecutor;
 import http.SimpleHttpResponse;
-import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import model.InstagramCredentials;
 import model.OAuthCredentials;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.oauth.OAuthWorker;
@@ -23,7 +19,6 @@ import service.oauth.OAuthWorker;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by Yvonne on 2016-03-06.
