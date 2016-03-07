@@ -13,8 +13,8 @@ import java.net.URISyntaxException;
 public interface PixelClient {
     String API_ENDPOINT = "https://api.500px.com/v1";
 
-    JsonArray getPhotos() throws PixelClientException, IOException, URISyntaxException;
-    JsonArray getPhotos(int pageNumber) throws PixelClientException, IOException, URISyntaxException;
+    JsonObject getPhotos() throws PixelClientException, IOException, URISyntaxException;
+    JsonObject getPhotos(int pageNumber) throws PixelClientException, IOException, URISyntaxException;
     JsonObject getPhoto(String id) throws IOException, URISyntaxException, PixelClientException;
 
     class QueryParam {

@@ -4,6 +4,7 @@ package common.model.content;
  * Created by Yvonne on 2016-03-06.
  */
 public class Feed {
+    private ContentType contentType;
     private String id;
     private String location;
     private int likeCount;
@@ -14,7 +15,8 @@ public class Feed {
 
     private Feed() {}
 
-    private Feed(String id, String location, int likeCount, int commentCount, String userName, String caption, long createdTime) {
+    private Feed(ContentType contentType, String id, String location, int likeCount, int commentCount, String userName, String caption, long createdTime) {
+        this.contentType = contentType;
         this.id = id;
         this.location = location;
         this.likeCount = likeCount;
@@ -22,6 +24,22 @@ public class Feed {
         this.userName = userName;
         this.caption = caption;
         this.createdTime = createdTime;
+    }
+
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getLocation() {
@@ -73,6 +91,7 @@ public class Feed {
     }
 
     public static class FeedBuilder {
+        private ContentType contentType;
         private String id;
         private String location;
         private int likeCount;
@@ -80,6 +99,11 @@ public class Feed {
         private String userName;
         private String caption;
         private long createdTime;
+
+        public FeedBuilder setContentType(ContentType contentType) {
+            this.contentType = contentType;
+            return this;
+        }
 
         public FeedBuilder setId(String id) {
             this.id = id;
@@ -117,7 +141,7 @@ public class Feed {
         }
 
         public Feed createFeed() {
-            return new Feed(id, location, likeCount, commentCount, userName, caption, createdTime);
+            return new Feed(contentType, id, location, likeCount, commentCount, userName, caption, createdTime);
         }
     }
 

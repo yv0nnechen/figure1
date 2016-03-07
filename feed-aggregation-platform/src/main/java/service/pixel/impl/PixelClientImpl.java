@@ -31,14 +31,14 @@ public class PixelClientImpl implements PixelClient{
     }
 
     @Override
-    public JsonArray getPhotos() throws PixelClientException, IOException, URISyntaxException {
+    public JsonObject getPhotos() throws PixelClientException, IOException, URISyntaxException {
         logger.info("Getting current user photos...");
 
         return performRequestAndGetFeeds(HttpMethods.GET, PixelAPIConstants.PHOTOS, null);
     }
 
     @Override
-    public JsonArray getPhotos(int pageNumber) throws PixelClientException, IOException, URISyntaxException {
+    public JsonObject getPhotos(int pageNumber) throws PixelClientException, IOException, URISyntaxException {
         logger.info("Getting current user photos...");
 
         Map<String, String> params = new HashMap<String, String>();
@@ -59,13 +59,13 @@ public class PixelClientImpl implements PixelClient{
         return performRequestAndGetFeed(HttpMethods.GET, apiMethod, null);
     }
 
-    protected JsonArray performRequestAndGetFeeds(HttpMethods verbs, String url,
+    protected JsonObject performRequestAndGetFeeds(HttpMethods verbs, String url,
                                                   Map<String, String> params) throws IOException, URISyntaxException, PixelClientException {
         switch (verbs){
             case GET:
                 SimpleHttpResponse simpleHttpResponse = doGET(url, params);
                 if(simpleHttpResponse.getStatusCode()>=200 && simpleHttpResponse.getStatusCode()<300) {
-                    return new JsonObject(simpleHttpResponse.getRawResponse()).getJsonArray("photos");
+                    return new JsonObject(simpleHttpResponse.getRawResponse());
                 } else {
                     throw handleError(simpleHttpResponse);
                 }

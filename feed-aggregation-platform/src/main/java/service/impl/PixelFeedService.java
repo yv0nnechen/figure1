@@ -1,10 +1,14 @@
 package service.impl;
 
+import common.model.content.ContentType;
 import common.model.content.Feed;
+import common.model.content.PaginatedFeeds;
+import common.model.content.Pagination;
 import common.utils.JsonUtils;
 import exception.FeedServiceException;
 import exception.PixelClientException;
 import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import model.OAuthCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +39,7 @@ public class PixelFeedService implements FeedService{
     //TODO need auth credentials later
 
     @Override
-    public List<Feed> getFeeds(OAuthCredentials oAuthCredentials) throws FeedServiceException {
+    public PaginatedFeeds getFeeds(OAuthCredentials oAuthCredentials) throws FeedServiceException {
         logger.debug("going to load feeds with default params");
         PixelClient pixelClient = new PixelClientImpl(PixelAuthProvider.getInstance().getClientId());
         try {
@@ -47,14 +51,18 @@ public class PixelFeedService implements FeedService{
     }
 
     @Override
-    public List<Feed> getFeeds(OAuthCredentials oAuthCredentials, Map<String, Object> params) throws FeedServiceException {
+    public PaginatedFeeds getFeeds(OAuthCredentials oAuthCredentials, Map<String, Object> params) throws FeedServiceException {
         if(params == null){
             return getFeeds(oAuthCredentials);
         }
         logger.debug("going to load feeds with params page count {}", params.get(PixelClient.QueryParam.COUNT));
         PixelClient pixelClient = new PixelClientImpl(PixelAuthProvider.getInstance().getClientId());
         try {
-            return parseToFeeds(pixelClient.getPhotos((Integer) params.get(PixelClient.QueryParam.PAGE)).toString());
+            if(params.get(PixelClient.QueryParam.PAGE) == null){
+                return parseToFeeds(pixelClient.getPhotos().toString());
+            }
+            String s = pixelClient.getPhotos((Integer) params.get(PixelClient.QueryParam.PAGE)).toString();
+            return parseToFeeds(s);
         } catch (PixelClientException | IOException | URISyntaxException e) {
             logger.error("error getting feeds", e);
             throw new FeedServiceException(e);
@@ -73,13 +81,19 @@ public class PixelFeedService implements FeedService{
         }
     }
 
-    private List<Feed> parseToFeeds(String json){
-        JsonArray jsonArray = new JsonArray(json);
-        List<Feed> feeds = jsonArray
+    private PaginatedFeeds parseToFeeds(String json){
+        JsonObject jsonObject = new JsonObject(json);
+        Pagination pagination = new Pagination();
+        pagination.setPage(jsonObject.getInteger("current_page"));
+
+        List<Feed> feeds = jsonObject.getJsonArray("photos")
                 .stream()
                 .map(jsonObj -> parseToFeed(jsonObj.toString()))
                 .collect(Collectors.toList());
-        return feeds;
+        PaginatedFeeds paginatedFeeds = new PaginatedFeeds();
+        paginatedFeeds.setFeeds(feeds);
+        paginatedFeeds.setPagination(pagination);
+        return paginatedFeeds;
     }
 
     private Feed parseToFeed(String jsonObj){
@@ -88,6 +102,7 @@ public class PixelFeedService implements FeedService{
         LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         long createdTime = dateTime.toEpochSecond(ZoneOffset.UTC);
         return new Feed.FeedBuilder()
+                .setContentType(ContentType.PIXEL)
                 .setId(String.valueOf((Integer) JsonUtils.readPathFromParsedJsonWithDefault(parsedJson, "$.id", null)))
                 .setLocation((String) JsonUtils.readPathFromParsedJsonWithDefault(parsedJson, "$.image_url", null))
                 .setLikeCount((Integer) JsonUtils.readPathFromParsedJsonWithDefault(parsedJson, "$.votes_count", null))

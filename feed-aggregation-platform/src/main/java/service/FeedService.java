@@ -1,6 +1,7 @@
 package service;
 
 import common.model.content.Feed;
+import common.model.content.PaginatedFeeds;
 import exception.FeedServiceException;
 import exception.InstagramClientException;
 import model.OAuthCredentials;
@@ -14,9 +15,9 @@ import java.util.Map;
  * Created by Yvonne on 2016-03-06.
  */
 public interface FeedService {
-    List<Feed> getFeeds(OAuthCredentials oAuthCredentials) throws FeedServiceException;
+    PaginatedFeeds getFeeds(OAuthCredentials oAuthCredentials) throws FeedServiceException;
     //with pagination
-    List<Feed> getFeeds(OAuthCredentials oAuthCredentials, Map<String, Object> params)  throws FeedServiceException;
+    PaginatedFeeds getFeeds(OAuthCredentials oAuthCredentials, Map<String, Object> params)  throws FeedServiceException;
 
     Feed getFeed(OAuthCredentials oAuthCredentials, String id) throws FeedServiceException;
 }

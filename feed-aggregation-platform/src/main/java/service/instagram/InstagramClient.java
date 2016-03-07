@@ -13,8 +13,8 @@ import java.util.List;
  * Created by Yvonne on 2016-03-06.
  */
 public interface InstagramClient {
-    JsonArray getUserRecentMedia() throws InstagramClientException, IOException, URISyntaxException;
-    JsonArray getUserRecentMedia(int count, String minId, String maxId) throws InstagramClientException, IOException, URISyntaxException;
+    JsonObject getUserRecentMedia() throws InstagramClientException, IOException, URISyntaxException;
+    JsonObject getUserRecentMedia(int count, String minId, String maxId) throws InstagramClientException, IOException, URISyntaxException;
     JsonObject getMediaInfo(String mediaId) throws InstagramClientException, IOException, URISyntaxException;
 
     String API_ENDPOINT = "https://api.instagram.com/v1";

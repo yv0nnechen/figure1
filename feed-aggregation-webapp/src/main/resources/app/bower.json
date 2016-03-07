@@ -11,6 +11,7 @@
     "angular-resource": "~1.4.0",
     "html5-boilerplate": "~5.2.0",
     "jquery": "~2.2.1",
-    "bootstrap": "~3.3.6"
+    "bootstrap": "~3.3.6",
+    "angular-cookies": "~1.4.0"
   }
 }

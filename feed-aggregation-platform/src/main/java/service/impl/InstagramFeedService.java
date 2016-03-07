@@ -1,6 +1,9 @@
 package service.impl;
 
+import common.model.content.ContentType;
 import common.model.content.Feed;
+import common.model.content.PaginatedFeeds;
+import common.model.content.Pagination;
 import common.utils.JsonUtils;
 import exception.FeedServiceException;
 import exception.InstagramClientException;
@@ -31,7 +34,7 @@ public class InstagramFeedService implements FeedService{
     private InstagramFeedService() {}
 
     @Override
-    public List<Feed> getFeeds(OAuthCredentials oAuthCredentials) throws FeedServiceException {
+    public PaginatedFeeds getFeeds(OAuthCredentials oAuthCredentials) throws FeedServiceException {
         logger.debug("going to load feeds with default params");
         InstagramClient instagramClient = new InstagramClientImpl(InstagramAuthProvider.getInstance().getClientId(), oAuthCredentials);
         try {
@@ -43,7 +46,7 @@ public class InstagramFeedService implements FeedService{
     }
 
     @Override
-    public List<Feed> getFeeds(OAuthCredentials oAuthCredentials, Map<String, Object> params) throws FeedServiceException {
+    public PaginatedFeeds getFeeds(OAuthCredentials oAuthCredentials, Map<String, Object> params) throws FeedServiceException {
         if(params == null){
             return getFeeds(oAuthCredentials);
         }
@@ -51,7 +54,7 @@ public class InstagramFeedService implements FeedService{
         InstagramClient instagramClient = new InstagramClientImpl(InstagramAuthProvider.getInstance().getClientId(), oAuthCredentials);
         try {
             return parseToFeeds(instagramClient
-                    .getUserRecentMedia((Integer) params.get(InstagramClient.QueryParam.COUNT),
+                    .getUserRecentMedia(params.get(InstagramClient.QueryParam.COUNT)!=null? (Integer) params.get(InstagramClient.QueryParam.COUNT) :0,
                             (String) params.get(InstagramClient.QueryParam.MAX_ID),
                             (String) params.get(InstagramClient.QueryParam.MAX_ID)
             ).toString());
@@ -73,18 +76,25 @@ public class InstagramFeedService implements FeedService{
         }
     }
 
-    private List<Feed> parseToFeeds(String json){
-        JsonArray jsonArray = new JsonArray(json);
-        List<Feed> feeds = jsonArray
+    private PaginatedFeeds parseToFeeds(String json){
+        JsonObject jsonObject = new JsonObject(json);
+        Pagination pagination = new Pagination();
+
+        List<Feed> feeds = jsonObject.getJsonArray("data")
                 .stream()
                 .map(jsonObj -> parseToFeed(jsonObj.toString()))
                 .collect(Collectors.toList());
-        return feeds;
+        PaginatedFeeds paginatedFeeds = new PaginatedFeeds();
+        paginatedFeeds.setFeeds(feeds);
+        paginatedFeeds.setPagination(pagination);
+        return paginatedFeeds;
     }
 
+    //TODO should be able to move to abstract classes
     private Feed parseToFeed(String jsonObj){
         Object parsedJson = JsonUtils.getParsedJson(jsonObj);
         return new Feed.FeedBuilder()
+                .setContentType(ContentType.INSTAGRAM)
                 .setId((String) JsonUtils.readPathFromParsedJsonWithDefault(parsedJson, "$.id", null))
                 .setLocation((String) JsonUtils.readPathFromParsedJsonWithDefault(parsedJson, "$.images.low_resolution.url", null))
                 .setLikeCount((Integer) JsonUtils.readPathFromParsedJsonWithDefault(parsedJson, "$.likes.count", null))

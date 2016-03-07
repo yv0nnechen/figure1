@@ -51,7 +51,7 @@ public class InstagramClientImpl implements InstagramClient {
      * @throws InstagramClientException
      * @author tolstovdmit
      */
-    public JsonArray getUserRecentMedia() throws InstagramClientException, IOException, URISyntaxException {
+    public JsonObject getUserRecentMedia() throws InstagramClientException, IOException, URISyntaxException {
         logger.info("Getting current user recent media...");
 
         return performRequestAndGetFeeds(HttpMethods.GET, InstagramAPIConstants.USERS_SELF_RECENT_MEDIA, null);
@@ -69,7 +69,7 @@ public class InstagramClientImpl implements InstagramClient {
      * @throws InstagramClientException
      * @author tolstovdmit
      */
-    public JsonArray getUserRecentMedia(int count, String minId, String maxId) throws InstagramClientException, IOException, URISyntaxException {
+    public JsonObject getUserRecentMedia(int count, String minId, String maxId) throws InstagramClientException, IOException, URISyntaxException {
         logger.info("Getting current user recent media...");
 
         Map<String, String> params = new HashMap<String, String>();
@@ -106,13 +106,13 @@ public class InstagramClientImpl implements InstagramClient {
         return performRequestAndGetFeed(HttpMethods.GET, apiMethod, null);
     }
 
-    protected JsonArray performRequestAndGetFeeds(HttpMethods verbs, String url,
+    protected JsonObject performRequestAndGetFeeds(HttpMethods verbs, String url,
                                                                      Map<String, String> params) throws IOException, URISyntaxException, InstagramClientException {
         switch (verbs){
             case GET:
                 SimpleHttpResponse simpleHttpResponse = doGET(url, params);
                 if(simpleHttpResponse.getStatusCode()>=200&& simpleHttpResponse.getStatusCode()<300) {
-                    return new JsonObject(simpleHttpResponse.getRawResponse()).getJsonArray("data");
+                    return new JsonObject(simpleHttpResponse.getRawResponse());
                 } else {
                     throw handleError(simpleHttpResponse);
                 }

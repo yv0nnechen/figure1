@@ -4,7 +4,8 @@
 angular.module('feedAggregation', [
     'ui.router',
     'feedAggregation.Landing',
-    'feedAggregation.Gallery'
+    'feedAggregation.Gallery',
+    'ngCookies'
 ])
     .config(function($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise(function($injector) {
@@ -42,7 +43,12 @@ angular.module('feedAggregation', [
                 parent: 'privateRoot',
                 url:'/gallery',
                 templateUrl: 'src/app/gallery/gallery.tpl.html',
-                controller: "GalleryCtrl"
+                controller: "GalleryCtrl",
+                resolve: {
+                    isInstagramAuthenticated: function($cookies){
+                        return $cookies.get('inst-token');
+                    }
+                }
             })
 
 

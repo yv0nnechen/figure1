@@ -17,16 +17,12 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Post Source<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <!--TODO is activated or not-->
-                        <li><a ng-click=""><i class="fa fa-instagram"></i> Instagram</a></li>
-                        <li><a ng-click=""><i class="fa fa-500px"></i> 500px</a></li>
-                        <li><a ng-click=""><i class="fa fa-circle"></i> Imgur</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
+                        <li><a ng-click="authInst()"><i class="fa fa-instagram" ng-class="{'active-icon': instagramAuthenticated}"></i> Instagram</a></li>
+                        <li><a ng-click=""><i class="fa fa-500px active-icon"></i> 500px</a></li>
                     </ul>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
-
     </div>
 
 
@@ -36,7 +32,7 @@
         </div>
 
         <ul id="gallery-list" data-animated="fadeIn">
-            <li ng-repeat="feed in feeds">
+            <li ng-repeat="feed in mergedFeeds |orderBy:'-createdTime'" >
                 <img ng-src="{{feed.location}}" alt="" />
                 <div class="portfolio-item-content">
                     <span class="header">{{feed.caption}}</span>
@@ -44,9 +40,13 @@
                     <p class="body"> <i class="fa fa-heart"></i>{{feed.likeCount}}</p>
                     <p class="body"> <i class="fa fa-comment-o"></i>{{feed.commentCount}}</p>
                 </div>
-                <a href="#"><i class="more fa fa-eye"></i></a>
+                <a ng-click="toggleModal(feed)"><i class="more fa fa-eye"></i></a>
             </li>
         </ul>
+
+        <modal title="Image" visible="showModal">
+            <img class="img-responsive center-block" ng-src="{{individual.location}}" />
+        </modal>
     </div>
 
 </div>
