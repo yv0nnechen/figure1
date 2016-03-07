@@ -7,7 +7,6 @@ import common.model.content.Pagination;
 import common.utils.JsonUtils;
 import exception.FeedServiceException;
 import exception.InstagramClientException;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import model.OAuthCredentials;
 import org.slf4j.Logger;
@@ -55,7 +54,7 @@ public class InstagramFeedService implements FeedService{
         try {
             return parseToFeeds(instagramClient
                     .getUserRecentMedia(params.get(InstagramClient.QueryParam.COUNT)!=null? (Integer) params.get(InstagramClient.QueryParam.COUNT) :0,
-                            (String) params.get(InstagramClient.QueryParam.MAX_ID),
+                            (String) params.get(InstagramClient.QueryParam.MIN_ID),
                             (String) params.get(InstagramClient.QueryParam.MAX_ID)
             ).toString());
         } catch (InstagramClientException | IOException | URISyntaxException e) {
@@ -84,6 +83,10 @@ public class InstagramFeedService implements FeedService{
                 .stream()
                 .map(jsonObj -> parseToFeed(jsonObj.toString()))
                 .collect(Collectors.toList());
+        if(feeds.size()>0){
+            pagination.setMinId(feeds.get(0).getId());
+            pagination.setMaxId(feeds.get(feeds.size()-1).getId());
+        }
         PaginatedFeeds paginatedFeeds = new PaginatedFeeds();
         paginatedFeeds.setFeeds(feeds);
         paginatedFeeds.setPagination(pagination);

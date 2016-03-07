@@ -5,8 +5,10 @@ package common.model.content;
  */
 public class Pagination {
     private int page;
-    private String max_id;
-    private String min_id;
+    //used for return media earlier than this max_id
+    private String maxId;
+    //used for return media later than this min_id
+    private String minId;
     private int count;
 
     public int getPage() {
@@ -17,20 +19,20 @@ public class Pagination {
         this.page = page;
     }
 
-    public String getMax_id() {
-        return max_id;
+    public String getMaxId() {
+        return maxId;
     }
 
-    public void setMax_id(String max_id) {
-        this.max_id = max_id;
+    public void setMaxId(String maxId) {
+        this.maxId = maxId;
     }
 
-    public String getMin_id() {
-        return min_id;
+    public String getMinId() {
+        return minId;
     }
 
-    public void setMin_id(String min_id) {
-        this.min_id = min_id;
+    public void setMinId(String minId) {
+        this.minId = minId;
     }
 
     public int getCount() {

@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * quick module and directive that can be reused. - see usage in gallery.js & gallery.tpl.html
+ */
 angular.module('Common.Modal', [])
     .directive('modal', function () {
     return {

@@ -70,7 +70,7 @@ public class InstagramClientImpl implements InstagramClient {
      * @author tolstovdmit
      */
     public JsonObject getUserRecentMedia(int count, String minId, String maxId) throws InstagramClientException, IOException, URISyntaxException {
-        logger.info("Getting current user recent media...");
+        logger.info("Getting current user recent media... Count = {}, minId = {}, maxId = {}", count, minId, maxId);
 
         Map<String, String> params = new HashMap<String, String>();
 

@@ -61,7 +61,7 @@ public class PixelFeedService implements FeedService{
             if(params.get(PixelClient.QueryParam.PAGE) == null){
                 return parseToFeeds(pixelClient.getPhotos().toString());
             }
-            String s = pixelClient.getPhotos((Integer) params.get(PixelClient.QueryParam.PAGE)).toString();
+            String s = pixelClient.getPhotos(Integer.parseInt((String) params.get(PixelClient.QueryParam.PAGE))).toString();
             return parseToFeeds(s);
         } catch (PixelClientException | IOException | URISyntaxException e) {
             logger.error("error getting feeds", e);

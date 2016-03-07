@@ -30,6 +30,10 @@
         <div class="big-title text-center" data-animation="fadeInDown" data-animation-delay="01">
             <h1>Latest Posts</h1>
         </div>
+        <div class="text-center">
+            <a ng-click="prevPage()" ng-disable="disablePrev" class="arrow"><i class="fa fa-angle-double-left"></i></a>
+            <a ng-click="nextPage()" class="arrow"><i class="fa fa-angle-double-right"></i></a>
+        </div>
 
         <ul id="gallery-list" data-animated="fadeIn">
             <li ng-repeat="feed in mergedFeeds |orderBy:'-createdTime'" >

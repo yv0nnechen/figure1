@@ -90,7 +90,10 @@ End of Login
   color: #ff656c;
 }
 
-
+.arrow {
+  padding : 20px;
+  display: inline-block;
+}
 
 /********************************************************
 Start of Gallery view
